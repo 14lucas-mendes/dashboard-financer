@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Dinheiro - Dashboard Financeiro</title>
+    <link rel="stylesheet" href="./src/css/style.css">
+    <!-- Using Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <div class="logo-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </div>
+                <h1 class="logo-text">Meu Dinheiro</h1>
+            </div>
+            
+            <div class="header-center">
+                <button class="date-nav-btn" id="prevtMonth" aria-label="Mês anterior">&lt;</button>
+                <span class="current-date"></span>
+                <button class="date-nav-btn" id="nextMonth" aria-label="Próximo mês">&gt;</button>
+            </div>
+            
+            <div class="header-right">
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema">
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-content">
+            <!-- Summary Cards -->
+            <section class="summary-cards">
+                <article class="card income-card">
+                    <div class="card-header">
+                        <h3>Entradas</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-amount positive">R$ 5.000,00</span>
+                        <span class="card-date">Última entrada: 25/05/2024</span>
+                    </div>
+                </article>
+
+                <article class="card expense-card">
+                    <div class="card-header">
+                        <h3>Saídas</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-amount negative">R$ 1.350,00</span>
+                        <span class="card-date">Última saída: 20/05/2024</span>
+                    </div>
+                </article>
+
+                <article class="card total-card">
+                    <div class="card-header">
+                        <h3>Saldo Total</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="card-icon"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="card-body">
+                        <span class="card-amount positive">R$ 3.650,00</span>
+                        <span class="card-status">Saldo Positivo</span>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Main Grid: Table and Chart -->
+            <section class="content-grid">
+                <!-- Transactions Table -->
+                <div class="transactions-container card">
+                    <div class="section-header">
+                        <h2>Últimas Transações</h2>
+                        <a href="#" class="view-all">Ver todas</a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="transactions-table">
+                            <thead>
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Categoria</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Transactions will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Chart Placeholder -->
+                <div class="chart-container card">
+                    <div class="section-header">
+                        <h2>Gastos por Categoria</h2>
+                    </div>
+                    <div class="chart-wrapper">
+                        <!-- Placeholder for Chart.js -->
+                        <div id="expenseChart" class="chart-placeholder">
+                            <div class="chart-circle-mock">
+                                <span class="chart-label">Gráfico</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <span class="dot color-1"></span>
+                            <span>Moradia (40%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="dot color-2"></span>
+                            <span>Alimentação (35%)</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="dot color-3"></span>
+                            <span>Transporte (25%)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button -->
+        <button class="fab" aria-label="Nova Transação" type="button">
+            <span class="fab-icon">+</span>
+            <span class="fab-text">Nova Transação</span>
+        </button>
+
+        <!-- Modal -->
+        <div id="transactionModal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="transactionModalTitle">Nova Transação</h2>
+                    <button class="close-modal" type="button" aria-label="Fechar">&times;</button>
+                </div>
+                <form class="modal-form">
+                    <div class="form-group">
+                        <label for="description">Descrição</label>
+                        <input type="text" id="description" name="description" placeholder="Ex: Conta de Luz" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">Valor</label>
+                        <input type="number" id="amount" name="amount" placeholder="0,00" step="0.01" required>
+                        <small>Use sinal negativo (-) para despesas</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="date">Data</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="category">Categoria</label>
+                            <select id="category" name="category" required>
+                                <option value="" disabled selected>Selecione...</option>
+                                <option value="alimentacao">Alimentação</option>
+                                <option value="moradia">Moradia</option>
+                                <option value="transporte">Transporte</option>
+                                <option value="lazer">Lazer</option>
+                                <option value="salario">Salário</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Tipo de Transação</label>
+                        <div class="radio-group">
+                            <label class="radio-label income">
+                                <input type="radio" name="type" value="income">
+                                <span class="radio-custom"></span>
+                                Entrada
+                            </label>
+                            <label class="radio-label expense">
+                                <input type="radio" name="type" value="expense" checked>
+                                <span class="radio-custom"></span>
+                                Saída
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-cancel">Cancelar</button>
+                        <button type="submit" class="btn btn-save">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="deleteTransactionModal" class="modal-overlay confirm-delete-modal">
+            <div class="modal-content confirm-delete-content" role="dialog" aria-modal="true" aria-labelledby="deleteTransactionTitle">
+                <div class="modal-header">
+                    <h2 id="deleteTransactionTitle">Excluir transação</h2>
+                    <button class="close-modal" type="button" aria-label="Fechar">&times;</button>
+                </div>
+                <div class="confirm-delete-body">
+                    <p>Tem certeza que deseja deletar essa transação?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel">Cancelar</button>
+                    <button type="button" class="btn btn-delete">Deletar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application Script -->
+    <script type="module" src="./src/js/app.js"></script>
+</body>
+</html>
