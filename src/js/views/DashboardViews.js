@@ -4,7 +4,7 @@ export default class DashboardView {
         this.entriesDisplay = document.querySelector('.income-card .card-amount');
         this.expensesDisplay = document.querySelector('.expense-card .card-amount');
         this.totalDisplay = document.querySelector('.total-card .card-amount');
-        this.headerDate = document.querySelector('header-center span');
+        this.displayHeader = document.querySelector('.current-date');
     }
 
     updateCards(income, expense, total) {
@@ -13,6 +13,10 @@ export default class DashboardView {
         this.totalDisplay.innerText = total;
     }
 
+    updateHeader(date) {
+        this.displayHeader.innerText = date;
+    }
+    
     addTransaction(transaction) {
         const tr = document.createElement('tr')
         const dataFormatada = new Date(transaction.date).toLocaleDateString('pt-BR')

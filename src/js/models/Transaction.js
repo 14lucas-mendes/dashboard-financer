@@ -7,5 +7,4 @@ export default class Transaction {
         this.category = category;
         this.type = type;
    }
-
 }

@@ -1,27 +1,25 @@
 import AppController from './controllers/AppControllers.js';
 
+//instancia o controlador da aplicação
 const app = new AppController();
+
+//inicializa a aplicação
 app.init();
 
-
-//capturando data atual
-const data = new Date();
-const options = { year: 'numeric', month: 'long' };
-const dataFormatada = data.toLocaleDateString('pt-BR', options);
-
-
+//capturando elementos do DOM
 const form = document.querySelector('.modal-form');
 const appContainer = document.querySelector('.app-container');
 const transactionModal = document.getElementById('transactionModal');
 const deleteTransactionModal = document.getElementById('deleteTransactionModal');
 const transactionModalTitle = document.getElementById('transactionModalTitle');
 const saveButton = form.querySelector('.btn-save');
-const nextMonth = document.querySelector('#nextMonth');
-const prevMonth = document.querySelector('#prevtMonth');
-const dataAtual = document.querySelector('.current-date span');
+const headerNav = document.querySelector('.header-center');
 
+//variável para armazenar o ID da transação pendente de exclusão
 let pendingDeleteId = null;
 
+
+//função para definir o modo do modal de transação (criar ou editar)
 const setTransactionModalMode = (mode) => {
     if(mode === 'edit') {
         if(transactionModalTitle) transactionModalTitle.textContent = 'Editar Transação';
@@ -33,6 +31,8 @@ const setTransactionModalMode = (mode) => {
     if(saveButton) saveButton.textContent = 'Salvar';
 };
 
+
+//função para fechar o modal de transação
 const closeTransactionModal = () => {
     transactionModal?.classList.remove('active');
     delete form.dataset.editingId;
@@ -40,6 +40,8 @@ const closeTransactionModal = () => {
     setTransactionModalMode('create');
 };
 
+
+//função para lidar com o envio do formulário de transação
 form.addEventListener('submit', (event) => {
     event.preventDefault();
     console.log('Formulario enviado');
@@ -62,9 +64,12 @@ form.addEventListener('submit', (event) => {
     setTransactionModalMode('create');
 });
 
+//função para lidar com o clique no container da aplicação
 appContainer.addEventListener('click', (event) => {
+    //verifica se o alvo do clique é um elemento DOM
     if(!(event.target instanceof Element)) return;
 
+    //verifica se o alvo do clique é o botão de adicionar transação
     const fab = event.target.closest('.fab');
     if(fab) {
         setTransactionModalMode('create');
@@ -74,6 +79,7 @@ appContainer.addEventListener('click', (event) => {
         return;
     }
 
+    //verifica se o alvo do clique é o botão de fechar ou cancelar o modal de transação
     const closeTransactionModalButton = event.target.closest('#transactionModal .close-modal');
     const cancelTransactionModal = event.target.closest('#transactionModal .btn-cancel');
     if(closeTransactionModalButton || cancelTransactionModal) {
@@ -81,17 +87,20 @@ appContainer.addEventListener('click', (event) => {
         return;
     }
 
+    //verifica se o alvo do clique é o botão de excluir transação no modal de confirmação
     if(transactionModal && event.target === transactionModal) {
         closeTransactionModal();
         return;
     }
 
+    //verifica se o alvo do clique é o botão de fechar ou cancelar o modal de confirmação de exclusão
     if(deleteTransactionModal && event.target === deleteTransactionModal) {
         deleteTransactionModal.classList.remove('active');
         pendingDeleteId = null;
         return;
     }
 
+    //verifica se o alvo do clique é o botão de fechar ou cancelar o modal de confirmação de exclusão
     const closeDeleteModal = event.target.closest('#deleteTransactionModal .close-modal');
     const cancelDelete = event.target.closest('#deleteTransactionModal .btn-cancel');
     if(closeDeleteModal || cancelDelete) {
@@ -100,6 +109,7 @@ appContainer.addEventListener('click', (event) => {
         return;
     }
 
+    //verifica se o alvo do clique é o botão de confirmar a exclusão
     const confirmDelete = event.target.closest('#deleteTransactionModal .btn-delete');
     if(confirmDelete) {
         if(pendingDeleteId) app.removeTransaction(pendingDeleteId);
@@ -108,6 +118,7 @@ appContainer.addEventListener('click', (event) => {
         return;
     }
 
+    //verifica se o alvo do clique é o botão de editar transação
     const deleteButton = event.target.closest('.transactions-table .action-btn.delete');
     if(deleteButton) {
         const row = deleteButton.closest('tr');
@@ -119,12 +130,14 @@ appContainer.addEventListener('click', (event) => {
         return;
     }
 
+    //verifica se o alvo do clique é o botão de editar transação
     const editButton = event.target.closest('.transactions-table .action-btn.edit');
     if(editButton) {
         const row = editButton.closest('tr');
         const id = row?.dataset.transactionId;
         if(!id) return;
 
+        //busca a transação correspondente ao ID na carteira
         const transaction = app.wallet.transactions.find((t) => t.id === id);
         if(!transaction) return;
 
@@ -142,13 +155,22 @@ appContainer.addEventListener('click', (event) => {
     }
 });
 
+headerNav.addEventListener('click', (event) => {
+    //verifica se o alvo do clique é um elemento DOM
+    if(!(event.target instanceof Element)) return;
 
-nextMonth.addEventListener('click', () => {
-    app.wallet.nextMonth();
-    app.render();
-});
+    //verifica se o alvo do clique é o botão de ir para o próximo mês
+    const nextMonthButton = event.target.closest('#nextMonth');
+    if(nextMonthButton) {
+        app.moveNext();
+        return;
+    }
 
-prevMonth.addEventListener('click', () => {
-    app.wallet.prevMonth();
-    app.render();
-});
+    //verifica se o alvo do clique é o botão de ir para o mês anterior
+    const prevMonthButton = event.target.closest('#prevtMonth');
+    if(prevMonthButton) {
+        app.movePrevious();
+        return;
+    }
+
+})
