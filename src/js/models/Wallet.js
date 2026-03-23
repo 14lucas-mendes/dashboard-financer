@@ -38,10 +38,18 @@ export default class Wallet{
         return transaction;
    }
 
-   filterMonth() {
-        return this.transactions.filter(transaction => {
-            return transaction.date.getMonth() === this.date.getMonth() && transaction.date.getFullYear() === this.date.getFullYear();
-        })
+   filterTransactions() {
+        const month = this.date.getMonth() + 1;
+        const year = this.date.getFullYear();
+
+        const dateTransactions = this.transactions.filter(transaction => {
+            const transactionMonth = transaction.date.split('-')[1];
+            const transactionYear = transaction.date.split('-')[0];
+            if(!transactionMonth || !transactionYear) return false;
+            return Number(transactionMonth) === month && Number(transactionYear) === year;
+        });
+
+        return dateTransactions;        
    }
 
    getIncome() {
