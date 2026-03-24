@@ -5,12 +5,16 @@ export default class DashboardView {
         this.expensesDisplay = document.querySelector('.expense-card .card-amount');
         this.totalDisplay = document.querySelector('.total-card .card-amount');
         this.displayHeader = document.querySelector('.current-date');
+        this.valoresFormatados = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        });
     }
 
     updateCards(income, expense, total) {
-        this.entriesDisplay.innerText = income;
-        this.expensesDisplay.innerText = expense;
-        this.totalDisplay.innerText = total;
+        this.entriesDisplay.innerText = this.valoresFormatados.format(income);
+        this.expensesDisplay.innerText = this.valoresFormatados.format(expense);
+        this.totalDisplay.innerText = this.valoresFormatados.format(total);
     }
 
     updateHeader(date) {
@@ -20,7 +24,7 @@ export default class DashboardView {
     addTransaction(transaction) {
         const tr = document.createElement('tr')
         const dataFormatada = new Date(transaction.date).toLocaleDateString('pt-BR')
-        const precoFormatado = transaction.price.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+        const precoFormatado = this.valoresFormatados.format(transaction.price);
         let badge;
         let value;
 
