@@ -43,10 +43,33 @@ export default class Wallet{
         const year = this.date.getFullYear();
 
         const dateTransactions = this.transactions.filter(transaction => {
-            const transactionMonth = transaction.date.split('-')[1];
-            const transactionYear = transaction.date.split('-')[0];
-            if(!transactionMonth || !transactionYear) return false;
-            return Number(transactionMonth) === month && Number(transactionYear) === year;
+            //verfica se data existe
+            if(!transaction.date) return false;
+
+            //verifica se data é uma string
+            if(typeof transaction.date !== 'string') return false;
+
+            //verifica se data é no formato 'yyyy-mm-dd'
+            if(!transaction.date.includes('-')) return false;
+           const [transactionYear, transactionMonth, transactionDay] = transaction.date.split('-');
+
+            if(!transactionMonth || !transactionYear || !transactionDay) return false;
+
+            if(transactionMonth.length !== 2 || transactionYear.length !== 4 || transactionDay.length !== 2) return false;
+            if(transactionMonth === '00' || transactionYear === '0000' || transactionDay === '00') return false;
+
+            //verifica se data é um número
+            const checkNumberMonth = Number(transactionMonth);
+            const checkNumberYear = Number(transactionYear);
+
+            //verifica se mês é válido
+            if(checkNumberMonth < 1 || checkNumberMonth > 12) return false;
+
+            //verifica se ano é mês são números válidos
+            if(isNaN(checkNumberMonth) || isNaN(checkNumberYear)) return false;
+
+            return checkNumberMonth === month && checkNumberYear === year;
+        
         });
 
         return dateTransactions;        

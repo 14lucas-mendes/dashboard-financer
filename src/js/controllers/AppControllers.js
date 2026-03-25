@@ -17,7 +17,7 @@ export default class AppController {
 
     addTransaction(description, price, date, category, type) {
         const newTransaction = this.wallet.add(description, price, date, category, type)
-        this.view.addTransaction(newTransaction);
+        this.render();
 
         return newTransaction;
     }
@@ -65,13 +65,10 @@ export default class AppController {
     moveNext() {
         this.wallet.nextMonth();
         this.render();
-        return this.view.updateHeader(this.wallet.date.toLocaleDateString('pt-BR', this.options));
-    
     }
     
     movePrevious() {
         this.wallet.prevMonth();
         this.render();
-        return this.view.updateHeader(this.wallet.date.toLocaleDateString('pt-BR', this.options));
     }
 }
