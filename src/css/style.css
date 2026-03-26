@@ -196,7 +196,7 @@ body {
 }
 
 .card-amount.negative {
-    color: var(--text-primary); /* Dark in light mode */
+    color: var(--danger-color); /* Dark in light mode */
 }
 
 /* Dark mode adjustment for negative amount if needed specifically */

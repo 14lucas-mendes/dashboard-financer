@@ -5,6 +5,13 @@ export default class AppController {
     constructor() {
         this.view = new DashboardView();
         this.wallet = new Wallet();
+        this.textIncome = 'entrada';
+        this.textExpense = 'saida';
+        this.textTotal = 'saldo';
+        this.formatCurrency = new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+        });
         this.options = {
             month: 'long',
             year: 'numeric'
@@ -13,6 +20,10 @@ export default class AppController {
     
     init() {
         this.render();
+    }
+
+    currencyFormat(price) {
+        return this.formatCurrency.format(price);
     }
 
     addTransaction(description, price, date, category, type) {
@@ -42,12 +53,15 @@ export default class AppController {
         const filteredTransactions = this.wallet.filterTransactions();
 
         if(filteredTransactions.length === 0) {
-            this.view.updateCards(0, 0, 0);
+            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0));
             return;
         }
 
         filteredTransactions.forEach(transaction => {
-            this.view.addTransaction(transaction);
+            this.view.addTransaction({
+                ...transaction,
+                price: this.currencyFormat(transaction.price),
+            });
         });
 
         const totals = filteredTransactions.reduce((acc, transaction) => {
@@ -58,8 +72,26 @@ export default class AppController {
             }
             return acc;
         }, { income: 0, expense: 0 });
+
+        const contentCards = {
+            income: {
+                text: this.textIncome,
+                value: this.currencyFormat(totals.income),
+                status: 'Saldo Positivo',
+            },
+            expense: {
+                text: this.textExpense,
+                value: this.currencyFormat(totals.expense),
+                status: 'Saldo Negativo',
+            },
+            total: {
+                text: this.textTotal,
+                value: this.currencyFormat(totals.income - totals.expense),
+                status: 'Saldo Total',
+            }
+        }
         
-        this.view.updateCards(totals.income, totals.expense, totals.income - totals.expense);
+        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value);
     }
 
     moveNext() {

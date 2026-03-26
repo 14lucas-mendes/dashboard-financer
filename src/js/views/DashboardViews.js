@@ -5,16 +5,12 @@ export default class DashboardView {
         this.expensesDisplay = document.querySelector('.expense-card .card-amount');
         this.totalDisplay = document.querySelector('.total-card .card-amount');
         this.displayHeader = document.querySelector('.current-date');
-        this.valoresFormatados = new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-        });
     }
 
     updateCards(income, expense, total) {
-        this.entriesDisplay.innerText = this.valoresFormatados.format(income);
-        this.expensesDisplay.innerText = this.valoresFormatados.format(expense);
-        this.totalDisplay.innerText = this.valoresFormatados.format(total);
+        this.entriesDisplay.innerText = income
+        this.expensesDisplay.innerText = expense
+        this.totalDisplay.innerText = total
     }
 
     updateHeader(date) {
@@ -24,7 +20,6 @@ export default class DashboardView {
     addTransaction(transaction) {
         const tr = document.createElement('tr')
         const dataFormatada = new Date(transaction.date).toLocaleDateString('pt-BR')
-        const precoFormatado = this.valoresFormatados.format(transaction.price);
         let badge;
         let value;
 
@@ -37,7 +32,7 @@ export default class DashboardView {
             value = 'negative';
         }
 
-        const sinal = value === 'positive' ? '' : '-';
+       
 
         tr.setAttribute('data-transaction-id', transaction.id);
 
@@ -45,7 +40,7 @@ export default class DashboardView {
             <td class="td-description">${transaction.description}</td>
             <td><span class="badge ${badge}">${transaction.category}</span></td>
             <td>${dataFormatada}</td>
-            <td class="amount ${value}">${sinal}${precoFormatado}</td>
+            <td class="amount ${value}">${transaction.price}</td>
             <td class="td-actions">
                 <button class="action-btn edit" aria-label="Editar" type="button">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
