@@ -16,6 +16,11 @@ export default class AppController {
             month: 'long',
             year: 'numeric'
         }
+        this.cardContentDate = {
+            month: 'long',
+            day: '2-digit',
+            year: 'numeric'
+        }
     }
     
     init() {
@@ -52,8 +57,40 @@ export default class AppController {
         
         const filteredTransactions = this.wallet.filterTransactions();
 
+        const lastEntryPeriod = filteredTransactions.filter((transaction) => transaction.type === 'income');
+        const lastOutPeriod = filteredTransactions.filter((transaction) => transaction.type === 'expense');
+    
+        if(lastEntryPeriod.length > 0) {
+            const latestEntry = lastEntryPeriod.reduce((acc, transaction) => {
+                const accTime = new Date(acc.date).getTime();
+                const currentTime = new Date(transaction.date).getTime();
+                return currentTime > accTime ? transaction : acc;
+            });
+            const latestEntryDate = new Date(latestEntry.date);
+            this.textIncome = Number.isNaN(latestEntryDate.getTime())
+                ? 'Sem valores de entrada no período'
+                : `Última entrada: ${latestEntryDate.toLocaleDateString('pt-BR', this.cardContentDate)}`;
+        } else {
+            this.textIncome = 'Sem valores de entrada no período';
+        }
+
+        if(lastOutPeriod.length > 0) {
+            const latestOut = lastOutPeriod.reduce((acc, transaction) => {
+                const accTime = new Date(acc.date).getTime();
+                const currentTime = new Date(transaction.date).getTime();
+                return currentTime > accTime ? transaction : acc;
+            });
+            const latestOutDate = new Date(latestOut.date);
+            this.textExpense = Number.isNaN(latestOutDate.getTime())
+                ? 'Sem valores de saída no período'
+                : `Última saída: ${latestOutDate.toLocaleDateString('pt-BR', this.cardContentDate)}`;
+        } else {
+            this.textExpense = 'Sem valores de saída no período';
+        }
+
+
         if(filteredTransactions.length === 0) {
-            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0));
+            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0), this.textIncome, this.textExpense, this.textTotal);
             return;
         }
 
@@ -73,25 +110,33 @@ export default class AppController {
             return acc;
         }, { income: 0, expense: 0 });
 
+        if(totals.income === 0 && totals.expense === 0) {
+            this.textTotal = 'Saldo Zerado';
+        } else if (totals.income > totals.expense) {
+            this.textTotal = 'Saldo Positivo';
+        } else {
+            this.textTotal = 'Saldo Negativo';
+        }
+
         const contentCards = {
             income: {
                 text: this.textIncome,
                 value: this.currencyFormat(totals.income),
-                status: 'Saldo Positivo',
+                status: this.textTotal,
             },
             expense: {
                 text: this.textExpense,
                 value: this.currencyFormat(totals.expense),
-                status: 'Saldo Negativo',
+                status: this.textTotal,
             },
             total: {
                 text: this.textTotal,
                 value: this.currencyFormat(totals.income - totals.expense),
-                status: 'Saldo Total',
+                status: this.textTotal,
             }
         }
         
-        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value);
+        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value, contentCards.income.text, contentCards.expense.text, contentCards.total.text);
     }
 
     moveNext() {

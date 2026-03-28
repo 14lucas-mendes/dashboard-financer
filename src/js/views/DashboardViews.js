@@ -5,12 +5,18 @@ export default class DashboardView {
         this.expensesDisplay = document.querySelector('.expense-card .card-amount');
         this.totalDisplay = document.querySelector('.total-card .card-amount');
         this.displayHeader = document.querySelector('.current-date');
+        this.inputText = document.querySelector('.income-card .card-date');
+        this.outputText = document.querySelector('.expense-card .card-date');
+        this.balanceText = document.querySelector('.total-card .card-status');
     }
 
-    updateCards(income, expense, total) {
+    updateCards(income, expense, total, input, output, balance) {
         this.entriesDisplay.innerText = income
         this.expensesDisplay.innerText = expense
         this.totalDisplay.innerText = total
+        this.inputText.innerText = input
+        this.outputText.innerText = output
+        this.balanceText.innerText = balance
     }
 
     updateHeader(date) {
