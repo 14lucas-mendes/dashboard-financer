@@ -55,6 +55,18 @@ Atualmente a aplicação permite:
 - Padrão adotado: `locale = pt-BR` e `currency = BRL`
 - Valores exibidos com duas casas decimais no padrão monetário local
 
+### 6) Textos dinâmicos nos cards
+
+- Card de entradas exibe dinamicamente a **última entrada do período**
+- Card de saídas exibe dinamicamente a **última saída do período**
+- Card de saldo total exibe status dinâmico:
+  - `Saldo Positivo`
+  - `Saldo Negativo`
+  - `Saldo Zerado`
+- Fallbacks para períodos sem movimentação:
+  - `Sem valores de entrada no período`
+  - `Sem valores de saída no período`
+
 ---
 
 ## Principais desafios encontrados e soluções aplicadas
@@ -85,18 +97,41 @@ Atualmente a aplicação permite:
 
 Refino de conteúdo e estado visual dos cards:
 
-- Atualizar textos contextuais dos cards (última entrada/saída e status de saldo)
-- Garantir que o status do saldo total reflita corretamente positivo/negativo/zerado
-- Aplicar estilo visual consistente para saldo negativo
+- Consolidar estado visual do card total com base no status dinâmico do saldo
+- Refinar o uso de `status` entre Controller e View para evitar metadados não utilizados
+- Garantir consistência final entre texto, valor e estilo em todos os cenários
 
 ---
 
 ## Próximos passos planejados
 
-- Finalizar textos dinâmicos dos cards com base no período selecionado
-- Consolidar regra visual do card total para saldo negativo
-- Refinar contrato entre Controller e View para conteúdo textual dos cards
+- Finalizar a regra visual do card total para refletir `Positivo/Negativo/Zerado`
+- Ajustar contrato Controller/View para uso explícito de status dinâmico
 - Melhorar robustez com testes de cenários críticos (mês vazio, virada de ano, dados inválidos)
+
+---
+
+## Histórico de evolução (changelog)
+
+### Sprint atual
+
+- Estruturado estado mensal de navegação com atualização de header por período
+- Consolidado fluxo de renderização único no controller para evitar divergências visuais
+- Implementado filtro mensal com validações de robustez para datas inválidas
+- Corrigido cálculo dos cards para usar apenas transações filtradas do período ativo
+- Padronizada formatação monetária em `pt-BR` / `BRL` para cards e tabela
+- Adicionados textos dinâmicos para cards de entrada e saída com fallback em período vazio
+- Definida regra dinâmica de status do saldo total:
+  - `Saldo Positivo`
+  - `Saldo Negativo`
+  - `Saldo Zerado`
+
+### Correções relevantes aplicadas
+
+- Correção de inconsistência entre tabela filtrada e cards globais
+- Correção de `NaN` causado por mistura de número e string formatada no cálculo
+- Correção de parsing de data para seleção da última transação do período
+- Ajuste de formatação para separar claramente cálculo numérico e exibição textual
 
 ---
 
