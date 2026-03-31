@@ -209,6 +209,21 @@ body.dark-mode .card-amount.negative {
     color: var(--text-secondary);
 }
 
+.card-status.positive {
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.card-status.negative {
+    color: var(--danger-color);
+    font-weight: 600;
+}
+
+.card-status.neutral {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
 /* Main Content Grid */
 .content-grid {
     display: grid;

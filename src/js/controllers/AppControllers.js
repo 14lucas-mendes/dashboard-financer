@@ -90,7 +90,8 @@ export default class AppController {
 
 
         if(filteredTransactions.length === 0) {
-            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0), this.textIncome, this.textExpense, this.textTotal);
+            this.textTotal = 'Saldo Zerado';
+            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0), this.textIncome, this.textExpense, this.textTotal, this.textTotal);
             return;
         }
 
@@ -110,10 +111,12 @@ export default class AppController {
             return acc;
         }, { income: 0, expense: 0 });
 
-        if(totals.income === 0 && totals.expense === 0) {
-            this.textTotal = 'Saldo Zerado';
-        } else if (totals.income > totals.expense) {
+        const balance = totals.income - totals.expense;
+       
+        if(balance > 0) {
             this.textTotal = 'Saldo Positivo';
+        } else if (balance === 0) {
+            this.textTotal = 'Saldo Zerado';
         } else {
             this.textTotal = 'Saldo Negativo';
         }
@@ -136,7 +139,7 @@ export default class AppController {
             }
         }
         
-        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value, contentCards.income.text, contentCards.expense.text, contentCards.total.text);
+        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value, contentCards.income.text, contentCards.expense.text, contentCards.total.text, contentCards.total.status);
     }
 
     moveNext() {
