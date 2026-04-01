@@ -20,7 +20,7 @@
     --font-family: 'Inter', sans-serif;
 }
 
-body.dark-mode {
+[data-theme="dark"] {
     /* Color Palette - Dark Mode */
     --bg-color: #0f172a;
     --card-bg: #1e293b;

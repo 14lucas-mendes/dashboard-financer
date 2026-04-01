@@ -67,6 +67,13 @@ Atualmente a aplicação permite:
   - `Sem valores de entrada no período`
   - `Sem valores de saída no período`
 
+### 7) Tema (dark/light) com preferência do sistema
+
+- Tema padrão segue `prefers-color-scheme` quando não existe preferência salva
+- Clique no botão de tema define preferência explícita (`localStorage`) e passa a ter prioridade sobre o sistema
+- Mudança de tema do sistema é aplicada em tempo real apenas quando não existe preferência do usuário
+- Implementação baseada em `[data-theme="dark"]` no CSS e atributo `data-theme` no `documentElement`
+
 ---
 
 ## Principais desafios encontrados e soluções aplicadas
@@ -101,6 +108,10 @@ Refino de conteúdo e estado visual dos cards:
 - Refinar o uso de `status` entre Controller e View para evitar metadados não utilizados
 - Garantir consistência final entre texto, valor e estilo em todos os cenários
 
+Evolução de UX:
+
+- Consolidar tema dark/light (toggle + persistência + seguir sistema quando não houver preferência)
+
 ---
 
 ## Próximos passos planejados
@@ -125,6 +136,9 @@ Refino de conteúdo e estado visual dos cards:
   - `Saldo Positivo`
   - `Saldo Negativo`
   - `Saldo Zerado`
+- Implementado tema dark/light:
+  - segue tema do sistema quando não há preferência salva
+  - persiste preferência do usuário quando o toggle é utilizado
 
 ### Correções relevantes aplicadas
 

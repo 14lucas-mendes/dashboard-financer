@@ -1,7 +1,10 @@
 import AppController from './controllers/AppControllers.js';
+import ThemeController from './controllers/ThemeController.js';
+
 
 //instancia o controlador da aplicação
 const app = new AppController();
+const theme = new ThemeController();
 
 //inicializa a aplicação
 app.init();
@@ -14,6 +17,8 @@ const deleteTransactionModal = document.getElementById('deleteTransactionModal')
 const transactionModalTitle = document.getElementById('transactionModalTitle');
 const saveButton = form.querySelector('.btn-save');
 const headerNav = document.querySelector('.header-center');
+const btnTheme = document.getElementById('theme-toggle');
+
 
 //variável para armazenar o ID da transação pendente de exclusão
 let pendingDeleteId = null;
@@ -173,4 +178,8 @@ headerNav.addEventListener('click', (event) => {
         return;
     }
 
+})
+
+btnTheme?.addEventListener('click', () => {
+    theme.toggleTheme();
 })
