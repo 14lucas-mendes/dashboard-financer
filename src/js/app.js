@@ -49,7 +49,6 @@ const closeTransactionModal = () => {
 //função para lidar com o envio do formulário de transação
 form.addEventListener('submit', (event) => {
     event.preventDefault();
-    console.log('Formulario enviado');
 
     const description = document.querySelector('#description').value;
     const price = parseFloat(document.querySelector('#amount').value);  

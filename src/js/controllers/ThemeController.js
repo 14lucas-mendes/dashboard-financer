@@ -1,8 +1,9 @@
 
 export default class ThemeController {
     constructor() {
+        this.storageKey = 'dashboard-financer:theme';
         this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-        this.themeUser = localStorage.getItem('theme');
+        this.themeUser = localStorage.getItem(this.storageKey);
         this.savedTheme = this.getEffectiveTheme();
 
         this.applyTheme(this.savedTheme);
@@ -23,7 +24,7 @@ export default class ThemeController {
 
     setTheme(theme) {
         this.themeUser = theme;
-        localStorage.setItem('theme', theme);
+        localStorage.setItem(this.storageKey, theme);
     }
 
     applyTheme(theme) {
@@ -33,7 +34,7 @@ export default class ThemeController {
 
     bindSystemThemeListener() {
         const handler = () => {
-            const hasUserTheme = localStorage.getItem('theme') !== null;
+            const hasUserTheme = localStorage.getItem(this.storageKey) !== null;
             if(hasUserTheme) return;
 
             this.themeUser = null;
