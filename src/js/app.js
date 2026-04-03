@@ -24,11 +24,25 @@ const formError = form.querySelector('.form-error');
 const btnExport = document.getElementById('export-transactions');
 const btnImport = document.getElementById('import-transactions');
 const importFileInput = document.getElementById('import-file');
+const messageModal = document.getElementById('messageModal');
+const messageBody = document.getElementById('messageBody');
+const messageOk = document.getElementById('messageOk');
+const messageContent = document.querySelector('#messageModal .message-content');
 
 const setFormError = (message) => {
     if(!formError) return;
     formError.textContent = message;
     formError.classList.toggle('visible', Boolean(message));
+};
+
+const showMessageModal = (message, variant) => {
+    if(!messageModal || !messageBody) return;
+    messageBody.textContent = message;
+    if(messageContent) {
+        messageContent.classList.remove('success', 'error');
+        if(variant) messageContent.classList.add(variant);
+    }
+    messageModal.classList.add('active');
 };
 
 if(btnTheme) theme.syncToggleButton(btnTheme);
@@ -130,6 +144,11 @@ appContainer.addEventListener('click', (event) => {
         return;
     }
 
+    if(messageModal && event.target === messageModal) {
+        messageModal.classList.remove('active');
+        return;
+    }
+
     //verifica se o alvo do clique é o botão de fechar ou cancelar o modal de confirmação de exclusão
     if(deleteTransactionModal && event.target === deleteTransactionModal) {
         deleteTransactionModal.classList.remove('active');
@@ -143,6 +162,18 @@ appContainer.addEventListener('click', (event) => {
     if(closeDeleteModal || cancelDelete) {
         deleteTransactionModal?.classList.remove('active');
         pendingDeleteId = null;
+        return;
+    }
+
+    const closeMessageModal = event.target.closest('#messageModal .close-modal');
+    if(closeMessageModal) {
+        messageModal?.classList.remove('active');
+        return;
+    }
+
+    const confirmMessage = event.target.closest('#messageOk');
+    if(confirmMessage) {
+        messageModal?.classList.remove('active');
         return;
     }
 
@@ -221,7 +252,12 @@ btnTheme?.addEventListener('click', () => {
 
 //exportar arquivo
 btnExport?.addEventListener('click', () => {
-    service.export();
+    const result = service.export();
+    if(result?.fileName) {
+        showMessageModal(`Exportado: ${result.fileName}`, 'success');
+        return;
+    }
+    showMessageModal('Erro ao exportar arquivo.', 'error');
 })
 
 //importar arquivos
@@ -234,8 +270,11 @@ importFileInput?.addEventListener('change', async (event) => {
     if(!file) return;
     const result = await service.import(file);
     if(result?.error) {
-        setFormError('Erro ao importar arquivo.');
+        showMessageModal('Erro ao importar arquivo.', 'error');
+        importFileInput.value = '';
+        return;
     }
+    showMessageModal(`Importação concluída: ${result.imported} importadas, ${result.ignored} ignoradas`, 'success');
     importFileInput.value = '';
     app.render();
 });

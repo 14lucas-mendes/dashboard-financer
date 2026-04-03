@@ -104,6 +104,23 @@ body {
     align-items: center;
     gap: 4px;
 }
+.message-content {
+    max-width: 420px;
+}
+
+.message-body {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.message-content.success {
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+.message-content.error {
+    border-color: rgba(239, 68, 68, 0.5);
+}
 
 .date-nav-btn {
     background: none;

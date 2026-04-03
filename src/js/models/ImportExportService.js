@@ -15,13 +15,15 @@ export default class ImportExportService {
             transactions: this.wallet.transactions
         }
 
-        const blob = new Blob([JSON.stringify(transactionsExport)], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify(transactionsExport, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `wallet-${dataExport}.json`;
+        const fileName = `wallet-${dataExport}.json`;
+        a.download = fileName;
         a.click();
         URL.revokeObjectURL(url);
+        return { fileName };
     }
 
     async import(file) {

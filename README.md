@@ -56,6 +56,13 @@ Atualmente a aplicação permite:
 - Padrão adotado: `locale = pt-BR` e `currency = BRL`
 - Valores exibidos com duas casas decimais no padrão monetário local
 
+### 5.1) Importar / Exportar transações (JSON)
+
+- Exporta um arquivo JSON no formato `wallet-YYYY-MM-DD.json` com metadados e lista de transações
+- Importa JSON e faz merge com as transações existentes
+- IDs são regenerados no import (cada item importado vira uma nova transação)
+- Import parcial: itens inválidos são ignorados e o app exibe um resumo `importadas/ignoradas`
+
 ### 6) Textos dinâmicos nos cards
 
 - Card de entradas exibe dinamicamente a **última entrada do período**
