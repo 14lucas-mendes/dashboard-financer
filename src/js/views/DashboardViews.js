@@ -8,7 +8,6 @@ export default class DashboardView {
         this.inputText = document.querySelector('.income-card .card-date');
         this.outputText = document.querySelector('.expense-card .card-date');
         this.balanceText = document.querySelector('.total-card .card-status');
-        this
     }
 
     updateCards(income, expense, total, input, output, balance, status) {
@@ -21,13 +20,17 @@ export default class DashboardView {
         this.balanceText.innerText = balance
         this.balanceText.classList.remove('positive', 'negative', 'neutral');
         
-        if(status === 'Saldo Positivo') {
+        if(status === 'positive') {
             this.totalDisplay.classList.add('positive');
             this.balanceText.classList.add('positive');
-        } else if(status === 'Saldo Negativo') {
+        }
+
+        if(status === 'negative') {
             this.totalDisplay.classList.add('negative');
             this.balanceText.classList.add('negative');
-        } else {
+        }
+
+        if(status === 'neutral') {
             this.totalDisplay.classList.add('neutral');
             this.balanceText.classList.add('neutral');
         }

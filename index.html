@@ -26,7 +26,24 @@
             </div>
             
             <div class="header-right">
-                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema">
+                <button id="export-transactions" class="theme-toggle-btn" type="button" aria-label="Exportar transações (JSON)" title="Exportar transações (JSON)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </button>
+
+                <button id="import-transactions" class="theme-toggle-btn" type="button" aria-label="Importar transações (JSON)" title="Importar transações (JSON)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                </button>
+                <input id="import-file" type="file" accept="application/json" style="display: none;">
+
+                <button id="theme-toggle" class="theme-toggle-btn" aria-label="Alternar tema" title="Alternar tema">
                     <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
                     <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                 </button>
@@ -142,6 +159,7 @@
                     <button class="close-modal" type="button" aria-label="Fechar">&times;</button>
                 </div>
                 <form class="modal-form">
+                    <div class="form-error" role="alert" aria-live="polite"></div>
                     <div class="form-group">
                         <label for="description">Descrição</label>
                         <input type="text" id="description" name="description" placeholder="Ex: Conta de Luz" required>
@@ -150,7 +168,7 @@
                     <div class="form-group">
                         <label for="amount">Valor</label>
                         <input type="number" id="amount" name="amount" placeholder="0,00" step="0.01" required>
-                        <small>Use sinal negativo (-) para despesas</small>
+                        <small>Use valor positivo; o tipo define se é entrada ou saída</small>
                     </div>
 
                     <div class="form-row">
@@ -176,12 +194,12 @@
                         <label>Tipo de Transação</label>
                         <div class="radio-group">
                             <label class="radio-label income">
-                                <input type="radio" name="type" value="income">
+                                <input type="radio" name="type" value="income" required>
                                 <span class="radio-custom"></span>
                                 Entrada
                             </label>
                             <label class="radio-label expense">
-                                <input type="radio" name="type" value="expense" checked>
+                                <input type="radio" name="type" value="expense" checked required>
                                 <span class="radio-custom"></span>
                                 Saída
                             </label>

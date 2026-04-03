@@ -1,10 +1,12 @@
 import AppController from './controllers/AppControllers.js';
 import ThemeController from './controllers/ThemeController.js';
+import ImportExportService from './models/ImportExportService.js';
 
 
 //instancia o controlador da aplicação
 const app = new AppController();
 const theme = new ThemeController();
+const service = new ImportExportService(app.wallet);
 
 //inicializa a aplicação
 app.init();
@@ -18,6 +20,22 @@ const transactionModalTitle = document.getElementById('transactionModalTitle');
 const saveButton = form.querySelector('.btn-save');
 const headerNav = document.querySelector('.header-center');
 const btnTheme = document.getElementById('theme-toggle');
+const formError = form.querySelector('.form-error');
+const btnExport = document.getElementById('export-transactions');
+const btnImport = document.getElementById('import-transactions');
+const importFileInput = document.getElementById('import-file');
+
+const setFormError = (message) => {
+    if(!formError) return;
+    formError.textContent = message;
+    formError.classList.toggle('visible', Boolean(message));
+};
+
+if(btnTheme) theme.syncToggleButton(btnTheme);
+document.addEventListener('dashboard-financer:theme-change', () => {
+    if(!btnTheme) return;
+    theme.syncToggleButton(btnTheme);
+});
 
 
 //variável para armazenar o ID da transação pendente de exclusão
@@ -50,11 +68,26 @@ const closeTransactionModal = () => {
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
-    const description = document.querySelector('#description').value;
-    const price = parseFloat(document.querySelector('#amount').value);  
+    setFormError('');
+    if(!form.reportValidity()) return;
+
+    const description = document.querySelector('#description').value.trim();
+    const rawPrice = parseFloat(document.querySelector('#amount').value);
     const date = document.querySelector('#date').value;
     const category = document.querySelector('#category').value;
-    const type = document.querySelector('input[name="type"]:checked').value;
+    const typeInput = document.querySelector('input[name="type"]:checked');
+    if(!typeInput) {
+        setFormError('Selecione o tipo de transação.');
+        return;
+    }
+
+    if(Number.isNaN(rawPrice) || !Number.isFinite(rawPrice) || rawPrice === 0) {
+        setFormError('Informe um valor válido.');
+        return;
+    }
+
+    const price = Math.abs(rawPrice);
+    const type = typeInput.value;
 
     const editingId = form.dataset.editingId;
     if(editingId) {
@@ -181,4 +214,28 @@ headerNav.addEventListener('click', (event) => {
 
 btnTheme?.addEventListener('click', () => {
     theme.toggleTheme();
+    theme.syncToggleButton(btnTheme);
 })
+
+
+
+//exportar arquivo
+btnExport?.addEventListener('click', () => {
+    service.export();
+})
+
+//importar arquivos
+btnImport?.addEventListener('click', () => {
+    importFileInput?.click();
+});
+
+importFileInput?.addEventListener('change', async (event) => {
+    const file = event.target.files?.[0];
+    if(!file) return;
+    const result = await service.import(file);
+    if(result?.error) {
+        setFormError('Erro ao importar arquivo.');
+    }
+    importFileInput.value = '';
+    app.render();
+});

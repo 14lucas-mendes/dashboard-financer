@@ -99,6 +99,12 @@ body {
     border: 1px solid var(--border-color);
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .date-nav-btn {
     background: none;
     border: none;
@@ -196,12 +202,11 @@ body {
 }
 
 .card-amount.negative {
-    color: var(--danger-color); /* Dark in light mode */
+    color: var(--danger-color);
 }
 
-/* Dark mode adjustment for negative amount if needed specifically */
-body.dark-mode .card-amount.negative {
-    color: var(--text-primary); /* Still text primary which is light */
+.card-amount.neutral {
+    color: var(--text-primary);
 }
 
 .card-date, .card-status {
@@ -553,6 +558,22 @@ body.dark-mode .card-amount.negative {
     margin-top: 0.25rem;
     color: var(--text-secondary);
     font-size: 0.75rem;
+}
+
+.form-error {
+    display: none;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    background-color: rgba(239, 68, 68, 0.08);
+    color: var(--danger-color);
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.form-error.visible {
+    display: block;
 }
 
 .radio-group {

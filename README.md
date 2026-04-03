@@ -18,6 +18,7 @@ Atualmente a aplicação permite:
 - Filtrar transações por período selecionado
 - Atualizar cards e tabela com base no mesmo conjunto filtrado
 - Formatar valores monetários em `pt-BR` / `BRL` para cards e tabela
+- Validar submissão do formulário e prevenir criação de transações inválidas
 
 ---
 
@@ -73,6 +74,7 @@ Atualmente a aplicação permite:
 - Clique no botão de tema define preferência explícita (`localStorage`) e passa a ter prioridade sobre o sistema
 - Mudança de tema do sistema é aplicada em tempo real apenas quando não existe preferência do usuário
 - Implementação baseada em `[data-theme="dark"]` no CSS e atributo `data-theme` no `documentElement`
+- A preferência é salva na chave `dashboard-financer:theme` (evita conflito com chaves genéricas)
 
 ---
 
@@ -105,19 +107,18 @@ Atualmente a aplicação permite:
 Refino de conteúdo e estado visual dos cards:
 
 - Consolidar estado visual do card total com base no status dinâmico do saldo
-- Refinar o uso de `status` entre Controller e View para evitar metadados não utilizados
 - Garantir consistência final entre texto, valor e estilo em todos os cenários
 
 Evolução de UX:
 
-- Consolidar tema dark/light (toggle + persistência + seguir sistema quando não houver preferência)
+- Ajustar e evoluir a experiência do tema (ícone/label e opção “voltar a seguir o sistema”, se necessário)
 
 ---
 
 ## Próximos passos planejados
 
 - Finalizar a regra visual do card total para refletir `Positivo/Negativo/Zerado`
-- Ajustar contrato Controller/View para uso explícito de status dinâmico
+- Melhorar UX do formulário (mensagens por campo e highlights de erro)
 - Melhorar robustez com testes de cenários críticos (mês vazio, virada de ano, dados inválidos)
 
 ---
@@ -139,6 +140,9 @@ Evolução de UX:
 - Implementado tema dark/light:
   - segue tema do sistema quando não há preferência salva
   - persiste preferência do usuário quando o toggle é utilizado
+- Melhorada validação do formulário:
+  - bloqueia submit com dados inválidos
+  - evita erro quando tipo de transação não está selecionado
 
 ### Correções relevantes aplicadas
 

@@ -56,6 +56,7 @@ export default class AppController {
         this.view.clearTransactions();
         
         const filteredTransactions = this.wallet.filterTransactions();
+        let balanceStatus = 'neutral';
 
         const lastEntryPeriod = filteredTransactions.filter((transaction) => transaction.type === 'income');
         const lastOutPeriod = filteredTransactions.filter((transaction) => transaction.type === 'expense');
@@ -91,7 +92,8 @@ export default class AppController {
 
         if(filteredTransactions.length === 0) {
             this.textTotal = 'Saldo Zerado';
-            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0), this.textIncome, this.textExpense, this.textTotal, this.textTotal);
+            balanceStatus = 'neutral';
+            this.view.updateCards(this.currencyFormat(0), this.currencyFormat(0), this.currencyFormat(0), this.textIncome, this.textExpense, this.textTotal, balanceStatus);
             return;
         }
 
@@ -115,31 +117,31 @@ export default class AppController {
        
         if(balance > 0) {
             this.textTotal = 'Saldo Positivo';
+            balanceStatus = 'positive';
         } else if (balance === 0) {
             this.textTotal = 'Saldo Zerado';
+            balanceStatus = 'neutral';
         } else {
             this.textTotal = 'Saldo Negativo';
+            balanceStatus = 'negative';
         }
 
         const contentCards = {
             income: {
                 text: this.textIncome,
                 value: this.currencyFormat(totals.income),
-                status: this.textTotal,
             },
             expense: {
                 text: this.textExpense,
                 value: this.currencyFormat(totals.expense),
-                status: this.textTotal,
             },
             total: {
                 text: this.textTotal,
                 value: this.currencyFormat(totals.income - totals.expense),
-                status: this.textTotal,
             }
         }
         
-        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value, contentCards.income.text, contentCards.expense.text, contentCards.total.text, contentCards.total.status);
+        this.view.updateCards(contentCards.income.value, contentCards.expense.value, contentCards.total.value, contentCards.income.text, contentCards.expense.text, contentCards.total.text, balanceStatus);
     }
 
     moveNext() {
